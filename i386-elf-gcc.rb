@@ -12,7 +12,7 @@ class I386ElfGcc < Formula
   depends_on 'i386-elf-binutils'
 
   def install
-    binutils = Formula.factory 'i386-elf-binutils'
+    binutils = Formulary.factory 'i386-elf-binutils'
 
     ENV['CC'] = '/usr/local/bin/gcc-6'
     ENV['CXX'] = '/usr/local/bin/g++-6'
