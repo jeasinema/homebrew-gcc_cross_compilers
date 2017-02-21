@@ -6,7 +6,7 @@ class I386ElfBinutils < Formula
   sha256 "26253bf0f360ceeba1d9ab6965c57c6a48a01a8343382130d1ed47c468a3094f"
 
 
-  depends_on 'gcc63' => :build
+  depends_on 'gcc' => :build
 
   def install
     ENV['CC'] = '/usr/local/bin/gcc-6'
