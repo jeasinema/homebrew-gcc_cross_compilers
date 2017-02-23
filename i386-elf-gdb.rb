@@ -1,5 +1,17 @@
 require 'formula'
 
+class UniversalBrewedPython < Requirement
+  satisfy { archs_for_command("python").universal? }
+
+  def message; <<-EOS.undent
+    A build of GDB using a brewed Python was requested, but Python is not
+    a universal build.
+    GDB requires Python to be built as a universal binary or it will fail
+    if attempting to debug a 32-bit binary on a 64-bit host.
+    EOS
+  end
+end
+
 class I386ElfGdb < Formula
   homepage 'http://www.gnu.org/software/gdb/'
   url 'http://ftp.gnu.org/gnu/gdb/gdb-7.12.1.tar.xz'
@@ -7,6 +19,7 @@ class I386ElfGdb < Formula
 
   depends_on 'i386-elf-binutils'
   depends_on 'i386-elf-gcc'
+  depends_on UniversalBrewedPython
 
   def install
     # ENV['CC'] = '/usr/local/bin/gcc-4.9'
@@ -15,7 +28,7 @@ class I386ElfGdb < Formula
     # ENV['LD'] = '/usr/local/bin/gcc-4.9'
 
     mkdir 'build' do
-      system '../configure', '--target=i386-elf', "--prefix=#{prefix}", '--disable-werror'
+      system '../configure', '--target=i386-elf', "--prefix=#{prefix}", '--disable-werror', "--with-python=#{HOMEBREW_PREFIX}"
       system 'make'
       system 'make install'
       #FileUtils.rm_rf share/"locale"
